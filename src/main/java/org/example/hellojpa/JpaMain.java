@@ -1,9 +1,6 @@
 package org.example.hellojpa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +15,42 @@ public class JpaMain {
         tx.begin();
 
         try {
-//            Member member = Member.builder().username("c")
-//                    .build();
-//            em.persist(member);
+//            for(int i = 0; i < 51; i++) {
+//                Member member = Member.builder()
+//                        .username("c" + i)
+//                        .build();
+//                em.persist(member);
+//            }
+
+            Team team = Team.builder()
+                    .name("TeamA")
+                    .build();
+
+            em.persist(team);
+
+            Member member = Member.builder()
+                    .username("userA")
+                    .team(team)
+                    .build();
+
+            em.persist(member);
+
+//            em.flush();
+//            em.clear(); // db 쿼리문을 확인하고 싶다면
+
+            Member findMember = em.find(Member.class, member.getId());
+//            System.out.println(findMember);
+            Team findTeam = findMember.getTeam();
+
+            System.out.println("=============================" + findTeam.getName());
+
+            List<Member> members = findMember.getTeam().getMembers();
+
+            for(Member m : members) {
+                System.out.println("====================================="+m.getUsername());
+            }
+
+
 ////            em.flush();
 //
 //            Member memberTest = em.find(Member.class, 1223L);
@@ -52,21 +82,43 @@ public class JpaMain {
 ////            findMember.setId(3L); //update
 //            em.remove(findMember); //delete
             /*
-            crud 간단정리
-            c: persist()
-            r: find()
-            u: Object.setId()
-            d: remove()
+                crud 간단정리
+                c: persist()
+                r: find()
+                u: Object.setId()
+                d: remove()
              */
+//            Query query = em.createQuery("select m from Member as m");
+//            List resultList = query.getResultList();
+//            for (Object object : resultList) {
+//                System.out.println(object);
+//                MemberMapper.INSTANCE.toMember(object);
+//            }
+            // 반환 타입을 지정하지 않으면 object타입으로 반환한다.
+            // MapStruct 라이브러리는 컴파일 시점에 구체적인 타입을 알아야 하므로 Object타입을 직접 매핑하는건 허용되지 않는다
+            // 따라서 위와같은 문장은 ExceptionInInitializerError 정적변수 초기화 예외가 발생한다.
 
-            List<Member> result = em.createQuery("select m from Member as m where m.id > 40", Member.class)
-                    .setFirstResult(2)
-                    .setMaxResults(10)
-                    .getResultList();
+            // paging
+//            List<Member> result = em.createQuery("select m from Member as m where m.id > 40", Member.class)
+//                    .setFirstResult(2)
+//                    .setMaxResults(10)
+//                    .getResultList();
+//
+//            for (Member members : result) {
+//                System.out.println(members);
+//            }
+//
+//            // 파라미터 바인딩
+//            String usernameParam = "c0"; // = :속성명 을 사용하면 파라미터를 이름으로 구분할 수 있다.
+//            em.createQuery("select m from Member m where m.username = :username", Member.class)
+//                    .setParameter("username", usernameParam) // 파라미터 바인딩
+//                    .getResultStream()
+//                    .forEach(System.out::println);
+//
+//            em.createQuery("select m from Member m where m.username = '" + usernameParam + "'", Member.class)
+//                    .getResultStream() // 이런식으로 직접 문자를 더해 만들면 sql인젝션 공격을 당할 수 있다.
+//                    .forEach(System.out::println);
 
-            for (Member members : result) {
-                System.out.println(members);
-            }
 
             tx.commit();
         } catch (Exception e) {

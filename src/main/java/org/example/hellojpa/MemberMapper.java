@@ -12,6 +12,6 @@ public interface MemberMapper {
 //
 //    @Mapping(target = "name", source = "name")
 //    @Mapping(target = "id" , source = "id")
-//    Member toMember(Object object);
+//    Member toMember(Object object);//
 
 }

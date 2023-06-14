@@ -15,40 +15,46 @@ public class JpaMain {
         tx.begin();
 
         try {
-//            for(int i = 0; i < 51; i++) {
-//                Member member = Member.builder()
-//                        .username("c" + i)
-//                        .build();
-//                em.persist(member);
-//            }
-
-            Team team = Team.builder()
-                    .name("TeamA")
-                    .build();
-
-            em.persist(team);
-
-            Member member = Member.builder()
-                    .username("userA")
-                    .team(team)
-                    .build();
+//            Member member = Member.builder().username("memnber1").build();
+//            System.out.println(member.getUsername()+"================================");
+            Member member = new Member();
+            member.setUsername("memnber1");
 
             em.persist(member);
+            Team team = new Team();
+            team.setName("TeamA");
+//            Team team = Team.builder().name("TeamA").build();
+            team.getMembers().add(member); // create one-to-many row org.example.hellojpa.Team.members */ update 업데이트문 발생
+            em.persist(team);
 
+            // 저장
+//            Team team = Team.builder()
+//                    .name("TeamA")
+//                    .build();
+//            em.persist(team);
+//
+//            Member member = Member.builder()
+//                    .username("userA")
+//                    .team(team)
+//                    .build();
+////            team.getMembers().add(member); // 연관관계의 주인에만 값을 세팅해야함
+////            team.addMembers(member);
+//            em.persist(member);
+//
 //            em.flush();
 //            em.clear(); // db 쿼리문을 확인하고 싶다면
-
-            Member findMember = em.find(Member.class, member.getId());
-//            System.out.println(findMember);
-            Team findTeam = findMember.getTeam();
-
-            System.out.println("=============================" + findTeam.getName());
-
-            List<Member> members = findMember.getTeam().getMembers();
-
-            for(Member m : members) {
-                System.out.println("====================================="+m.getUsername());
-            }
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            System.out.println(findMember); // toString()으로 인해 양쪽을 반복참조하면서 무한 루프가 방생하게됨 lombok으로 toString만들지 말기
+//            Team findTeam = findMember.getTeam();
+//
+//            System.out.println("=============================" + findTeam.getName());
+//
+//            List<Member> members = findMember.getTeam().getMembers();
+//
+//            for(Member m : members) {
+//                System.out.println("====================================="+m.getUsername());
+//            }
 
 
 ////            em.flush();

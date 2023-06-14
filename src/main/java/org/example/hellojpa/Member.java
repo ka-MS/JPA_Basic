@@ -37,12 +37,19 @@ public class Member {
     // columndefinitions를 사용하면 컬럼정보를 직접 입력가능
     @Column(name = "username") // 엔티티명은 유저네임이지만 컬럼명은 name사용
     private String username;
+
+
 //    @Column(name = "team_id")
 //    private String teamId;
 
+    // insertable = false, updatable = false 옵션주면 읽기전용매핑가능하여 일대다 양방향 매핑도 가능 하지만 다대일 양방향을 사용하시길
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", insertable = false, updatable = false)
     private Team team; // 테이블이 생성될 때 fk를 자동생성한다.
+
+    @OneToOne
+    @JoinColumn(name="locker_id")
+    private Locker locker;
 
 //    private Integer age;
 //    @Enumerated(EnumType.STRING) // 해당 어노테이션을 사용하면 enum 사용 사능 ordinal사용금지
@@ -60,6 +67,9 @@ public class Member {
 //    @Transient
 //    private int temp;
 
-
-
+//    public void changeTeam(Team team) { // 로직이 들어가면 set으로 쓰지 않고 changTeam 등의 형식으로 씀
+//        this.team = team;
+//        team.getMembers().add(this);
+//    }
+    // structure 단축키 알트 7
 }

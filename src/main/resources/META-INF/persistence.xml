@@ -18,7 +18,7 @@
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.use_sql_comments" value="true"/>
 <!--            해당 value에 create 옵션 사용하면 테이블 드랍 후 새로 생성 운영장비에서는 절대로 ddl문을 사용해서는 안됨-->
-            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <property name="hibernate.hbm2ddl.auto" value="none" />
 <!--            update는 변경 부분만 반영(추가만) 컬럼삭제는 적용되지 않음-->
 
         </properties>
